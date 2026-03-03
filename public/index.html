@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🚨 Emergency Alert System</title>
+  <meta name="description"
+    content="Emergency alert website to instantly send a call or SMS to your emergency contact via Twilio." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="bg-glow"></div>
+
+  <main class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="siren-icon" aria-hidden="true">🚨</div>
+      <h1>Emergency Alert</h1>
+      <p class="subtitle">Press a button below to instantly contact help</p>
+    </header>
+
+    <!-- Status Banner -->
+    <div id="statusBanner" class="status-banner hidden" role="alert" aria-live="polite">
+      <span id="statusIcon"></span>
+      <span id="statusText"></span>
+    </div>
+
+    <!-- Action Cards -->
+    <section class="cards">
+
+      <!-- Call Card -->
+      <div class="card call-card">
+        <div class="card-icon">📞</div>
+        <h2>Emergency Call</h2>
+        <p>Triggers an automated voice call to your emergency contact immediately.</p>
+        <button id="callBtn" class="btn btn-call" onclick="triggerCall()">
+          <span class="btn-icon">📞</span>
+          <span class="btn-label">CALL NOW</span>
+          <span class="btn-loader hidden" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <!-- SMS Card -->
+      <div class="card sms-card">
+        <div class="card-icon">💬</div>
+        <h2>Emergency SMS</h2>
+        <p>Sends an urgent text message to your emergency contact right away.</p>
+        <button id="smsBtn" class="btn btn-sms" onclick="triggerSMS()">
+          <span class="btn-icon">💬</span>
+          <span class="btn-label">SEND SMS</span>
+          <span class="btn-loader hidden" aria-hidden="true"></span>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Powered by <strong>Twilio</strong> · For emergencies only</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
