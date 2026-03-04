@@ -29,12 +29,9 @@ const transporter = nodemailer.createTransport({
 // ── POST /call ──────────────────────────────────────────────────
 // Triggers an outbound voice call with a TwiML spoken message
 app.post('/call', async (req, res) => {
-  const to = req.body.to || TO;
-  if (!to) return res.status(400).json({ success: false, message: 'No phone number provided.' });
-
   try {
     const call = await client.calls.create({
-      to,
+      to: TO,
       from: FROM,
       twiml: `<Response>
         <Say voice="alice" language="en-US">
@@ -43,8 +40,8 @@ app.post('/call', async (req, res) => {
         </Say>
       </Response>`
     });
-    console.log(`[CALL] SID: ${call.sid} → ${to}`);
-    res.json({ success: true, message: `Call initiated to ${to}`, sid: call.sid });
+    console.log(`[CALL] SID: ${call.sid} → ${TO}`);
+    res.json({ success: true, message: `Call initiated to ${TO}`, sid: call.sid });
   } catch (err) {
     console.error('[CALL ERROR]', err.message);
     res.status(500).json({ success: false, message: err.message });
@@ -54,17 +51,14 @@ app.post('/call', async (req, res) => {
 // ── POST /sms ───────────────────────────────────────────────────
 // Sends an emergency SMS
 app.post('/sms', async (req, res) => {
-  const to = req.body.to || TO;
-  if (!to) return res.status(400).json({ success: false, message: 'No phone number provided.' });
-
   try {
     const message = await client.messages.create({
-      to,
+      to: TO,
       from: FROM,
-      body: `🚨 Emergency Alert! Someone needs your help immediately. Please respond ASAP!`
+      body: `Hi Abhishek, contact me as soon as possible!`
     });
-    console.log(`[SMS] SID: ${message.sid} → ${to}`);
-    res.json({ success: true, message: `SMS sent to ${to}`, sid: message.sid });
+    console.log(`[SMS] SID: ${message.sid} → ${TO}`);
+    res.json({ success: true, message: `SMS sent to ${TO}`, sid: message.sid });
   } catch (err) {
     console.error('[SMS ERROR]', err.message);
     res.status(500).json({ success: false, message: err.message });
