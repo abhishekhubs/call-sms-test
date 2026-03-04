@@ -37,7 +37,12 @@
       <div class="card call-card">
         <div class="card-icon">📞</div>
         <h2>Emergency Call</h2>
-        <p>Triggers an automated voice call to your emergency contact immediately.</p>
+        <p>Triggers an automated voice call to any number you choose.</p>
+        <div class="mail-input-wrap">
+          <label for="callRecipient" class="mail-label">Phone Number</label>
+          <input id="callRecipient" type="tel" class="mail-input call-input" placeholder="+1234567890"
+            autocomplete="tel" />
+        </div>
         <button id="callBtn" class="btn btn-call" onclick="triggerCall()">
           <span class="btn-icon">📞</span>
           <span class="btn-label">CALL NOW</span>
@@ -49,10 +54,32 @@
       <div class="card sms-card">
         <div class="card-icon">💬</div>
         <h2>Emergency SMS</h2>
-        <p>Sends an urgent text message to your emergency contact right away.</p>
+        <p>Sends an urgent text message to any number you choose.</p>
+        <div class="mail-input-wrap">
+          <label for="smsRecipient" class="mail-label">Phone Number</label>
+          <input id="smsRecipient" type="tel" class="mail-input sms-input" placeholder="+1234567890"
+            autocomplete="tel" />
+        </div>
         <button id="smsBtn" class="btn btn-sms" onclick="triggerSMS()">
           <span class="btn-icon">💬</span>
           <span class="btn-label">SEND SMS</span>
+          <span class="btn-loader hidden" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <!-- Mail Card -->
+      <div class="card mail-card">
+        <div class="card-icon">✉️</div>
+        <h2>Emergency Email</h2>
+        <p>Sends an urgent emergency email to any address you choose.</p>
+        <div class="mail-input-wrap">
+          <label for="mailRecipient" class="mail-label">Recipient Email</label>
+          <input id="mailRecipient" type="email" class="mail-input" placeholder="someone@example.com"
+            autocomplete="email" />
+        </div>
+        <button id="mailBtn" class="btn btn-mail" onclick="triggerMail()">
+          <span class="btn-icon">✉️</span>
+          <span class="btn-label">SEND MAIL</span>
           <span class="btn-loader hidden" aria-hidden="true"></span>
         </button>
       </div>
@@ -61,7 +88,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <p>Powered by <strong>Twilio</strong> · For emergencies only</p>
+      <p>Powered by <strong>Abhishek Shrivastav</strong> · For emergencies only</p>
     </footer>
   </main>
 

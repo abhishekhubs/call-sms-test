@@ -2,27 +2,32 @@
    EMERGENCY ALERT — Premium Dark Theme
    ═══════════════════════════════════════════ */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 :root {
-  --red:       #e63946;
-  --red-dark:  #c1121f;
-  --red-glow:  rgba(230, 57, 70, 0.35);
-  --orange:    #f4a261;
-  --bg:        #0a0a0f;
-  --surface:   #13131c;
-  --surface2:  #1c1c2a;
-  --border:    rgba(255,255,255,0.07);
-  --text:      #f0f0f5;
-  --muted:     #8888aa;
-  --sms:       #4361ee;
-  --sms-dark:  #2d49c7;
-  --sms-glow:  rgba(67, 97, 238, 0.35);
-  --radius:    20px;
+  --red: #e63946;
+  --red-dark: #c1121f;
+  --red-glow: rgba(230, 57, 70, 0.35);
+  --orange: #f4a261;
+  --bg: #0a0a0f;
+  --surface: #13131c;
+  --surface2: #1c1c2a;
+  --border: rgba(255, 255, 255, 0.07);
+  --text: #f0f0f5;
+  --muted: #8888aa;
+  --sms: #4361ee;
+  --sms-dark: #2d49c7;
+  --sms-glow: rgba(67, 97, 238, 0.35);
+  --mail: #10b981;
+  --mail-dark: #059669;
+  --mail-glow: rgba(16, 185, 129, 0.35);
+  --radius: 20px;
   --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -42,8 +47,8 @@ body {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(230,57,70,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(67,97,238,0.1) 0%, transparent 60%);
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(230, 57, 70, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(67, 97, 238, 0.1) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
@@ -74,8 +79,17 @@ body {
 }
 
 @keyframes pulse-siren {
-  0%, 100% { transform: scale(1);   filter: drop-shadow(0 0 18px rgba(230,57,70,0.6)); }
-  50%       { transform: scale(1.12); filter: drop-shadow(0 0 32px rgba(230,57,70,0.9)); }
+
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 18px rgba(230, 57, 70, 0.6));
+  }
+
+  50% {
+    transform: scale(1.12);
+    filter: drop-shadow(0 0 32px rgba(230, 57, 70, 0.9));
+  }
 }
 
 .header h1 {
@@ -129,11 +143,20 @@ body {
   color: var(--muted);
 }
 
-.hidden { display: none !important; }
+.hidden {
+  display: none !important;
+}
 
 @keyframes slide-in {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ── Cards ── */
@@ -166,6 +189,11 @@ body {
 .sms-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 20px 60px var(--sms-glow);
+}
+
+.mail-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 60px var(--mail-glow);
 }
 
 .card-icon {
@@ -210,14 +238,18 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   opacity: 0;
   transition: opacity 0.2s;
 }
 
-.btn:hover::before { opacity: 1; }
+.btn:hover::before {
+  opacity: 1;
+}
 
-.btn:active { transform: scale(0.97); }
+.btn:active {
+  transform: scale(0.97);
+}
 
 .btn:disabled {
   opacity: 0.55;
@@ -249,18 +281,76 @@ body {
   transform: translateY(-2px);
 }
 
+/* Mail Button */
+.btn-mail {
+  background: linear-gradient(135deg, var(--mail) 0%, var(--mail-dark) 100%);
+  color: #fff;
+  box-shadow: 0 4px 24px var(--mail-glow);
+}
+
+.btn-mail:hover:not(:disabled) {
+  box-shadow: 0 8px 40px rgba(16, 185, 129, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Mail Input */
+.mail-input-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  text-align: left;
+}
+
+.mail-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.mail-input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: var(--surface2);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.mail-input::placeholder {
+  color: var(--muted);
+}
+
+.mail-input:focus {
+  border-color: var(--mail);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+}
+
+.mail-input--error {
+  border-color: var(--red) !important;
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.18) !important;
+}
+
 /* Loader Spinner */
 .btn-loader {
   width: 18px;
   height: 18px;
-  border: 2.5px solid rgba(255,255,255,0.35);
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
   border-top-color: #fff;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ── Footer ── */
@@ -270,10 +360,17 @@ body {
   text-align: center;
 }
 
-.footer strong { color: var(--text); }
+.footer strong {
+  color: var(--text);
+}
 
 /* ── Responsive ── */
 @media (max-width: 480px) {
-  .cards { grid-template-columns: 1fr; }
-  .container { padding: 1.5rem 1rem; }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .container {
+    padding: 1.5rem 1rem;
+  }
 }

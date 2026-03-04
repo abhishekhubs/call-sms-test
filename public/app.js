@@ -7,7 +7,8 @@ function setLoading(btnId, isLoading) {
     const loader = btn.querySelector('.btn-loader');
 
     btn.disabled = isLoading;
-    label.textContent = isLoading ? 'SENDING...' : (btnId === 'callBtn' ? 'CALL NOW' : 'SEND SMS');
+    const defaultLabels = { callBtn: 'CALL NOW', smsBtn: 'SEND SMS', mailBtn: 'SEND MAIL' };
+    label.textContent = isLoading ? 'SENDING...' : defaultLabels[btnId];
     icon.classList.toggle('hidden', isLoading);
     loader.classList.toggle('hidden', !isLoading);
 }
@@ -32,15 +33,31 @@ function showStatus(type, message, icon) {
 // ── Call ────────────────────────────────────────────────────────
 
 async function triggerCall() {
+    const recipientEl = document.getElementById('callRecipient');
+    const recipient = recipientEl.value.trim();
+
+    if (!recipient) {
+        recipientEl.focus();
+        recipientEl.classList.add('mail-input--error');
+        showStatus('error', '❌ Please enter a phone number to call.', '⚠️');
+        return;
+    }
+    recipientEl.classList.remove('mail-input--error');
+
     setLoading('callBtn', true);
-    showStatus('loading', 'Initiating emergency call…', '⏳');
+    showStatus('loading', `Initiating emergency call to ${recipient}…`, '⏳');
 
     try {
-        const res = await fetch('/call', { method: 'POST' });
+        const res = await fetch('/call', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ to: recipient }),
+        });
         const data = await res.json();
 
         if (data.success) {
-            showStatus('success', '✅ Call triggered! Your phone will ring shortly.', '📞');
+            showStatus('success', `✅ Call triggered to ${recipient}! Phone will ring shortly.`, '📞');
+            recipientEl.value = '';
         } else {
             showStatus('error', `❌ Call failed: ${data.message}`, '⚠️');
         }
@@ -48,23 +65,37 @@ async function triggerCall() {
         showStatus('error', `❌ Network error: ${err.message}`, '⚠️');
     } finally {
         setLoading('callBtn', false);
-        const btn = document.getElementById('callBtn');
-        btn.querySelector('.btn-label').textContent = 'CALL NOW';
     }
 }
 
 // ── SMS ─────────────────────────────────────────────────────────
 
 async function triggerSMS() {
+    const recipientEl = document.getElementById('smsRecipient');
+    const recipient = recipientEl.value.trim();
+
+    if (!recipient) {
+        recipientEl.focus();
+        recipientEl.classList.add('mail-input--error');
+        showStatus('error', '❌ Please enter a phone number to SMS.', '⚠️');
+        return;
+    }
+    recipientEl.classList.remove('mail-input--error');
+
     setLoading('smsBtn', true);
-    showStatus('loading', 'Sending emergency SMS…', '⏳');
+    showStatus('loading', `Sending emergency SMS to ${recipient}…`, '⏳');
 
     try {
-        const res = await fetch('/sms', { method: 'POST' });
+        const res = await fetch('/sms', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ to: recipient }),
+        });
         const data = await res.json();
 
         if (data.success) {
-            showStatus('success', '✅ SMS sent! Check your phone for the message.', '💬');
+            showStatus('success', `✅ SMS sent to ${recipient}! Check the phone.`, '💬');
+            recipientEl.value = '';
         } else {
             showStatus('error', `❌ SMS failed: ${data.message}`, '⚠️');
         }
@@ -72,7 +103,43 @@ async function triggerSMS() {
         showStatus('error', `❌ Network error: ${err.message}`, '⚠️');
     } finally {
         setLoading('smsBtn', false);
-        const btn = document.getElementById('smsBtn');
-        btn.querySelector('.btn-label').textContent = 'SEND SMS';
+    }
+}
+
+// ── Mail ─────────────────────────────────────────────────────────
+
+async function triggerMail() {
+    const recipientEl = document.getElementById('mailRecipient');
+    const recipient = recipientEl.value.trim();
+
+    if (!recipient) {
+        recipientEl.focus();
+        recipientEl.classList.add('mail-input--error');
+        showStatus('error', '❌ Please enter a recipient email address.', '⚠️');
+        return;
+    }
+    recipientEl.classList.remove('mail-input--error');
+
+    setLoading('mailBtn', true);
+    showStatus('loading', `Sending emergency email to ${recipient}…`, '⏳');
+
+    try {
+        const res = await fetch('/mail', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ to: recipient }),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            showStatus('success', `✅ Email sent to ${recipient}!`, '✉️');
+            recipientEl.value = '';
+        } else {
+            showStatus('error', `❌ Email failed: ${data.message}`, '⚠️');
+        }
+    } catch (err) {
+        showStatus('error', `❌ Network error: ${err.message}`, '⚠️');
+    } finally {
+        setLoading('mailBtn', false);
     }
 }
